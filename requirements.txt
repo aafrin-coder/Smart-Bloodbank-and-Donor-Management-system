@@ -1,2 +1,4 @@
 Flask
-openpyxl reportlab
+gunicorn
+openpyxl
+reportlab
