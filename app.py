@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 import sqlite3
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from flask import send_file
 from openpyxl import Workbook
@@ -22,6 +23,12 @@ def get_db_connection():
 def login():
     return render_template("login.html")
 
+# Register page
+
+@app.route('/register')
+def register():
+    return render_template("register.html")
+
 # Login Authentication
 @app.route('/login', methods=['POST'])
 def check_login():
@@ -33,14 +40,14 @@ def check_login():
     cursor = conn.cursor()
 
     cursor.execute(
-        "SELECT * FROM admin WHERE username=? AND password=?",
-        (username, password)
+        "SELECT * FROM admin WHERE username=?",
+        (username,)
     )
 
     admin = cursor.fetchone()
     conn.close()
 
-    if admin:
+    if admin and check_password_hash(admin["password"],password):
         session["logged_in"] = True
         return redirect('/dashboard')
     else:
@@ -48,6 +55,41 @@ def check_login():
             "login.html",
             error="Invalid Username or Password"
         )
+
+# Register User
+
+@app.route('/register', methods=['POST'])
+def save_register():
+
+    username = request.form['username']
+    password = request.form['password']
+
+    conn = get_db_connection()
+
+    existing = conn.execute(
+        "SELECT * FROM admin WHERE username=?",
+        (username,)
+    ).fetchone()
+
+    if existing:
+        conn.close()
+        return render_template(
+            "register.html",
+            error="Username already exists"
+        )
+
+    hashed_password = generate_password_hash(password)
+
+    conn.execute(
+        "INSERT INTO admin(username,password) VALUES(?,?)",
+        (username, hashed_password)
+    )
+
+    conn.commit()
+    conn.close()
+
+    return redirect("/")
+
 
 # Dashboard
 

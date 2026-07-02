@@ -8,8 +8,8 @@ cursor = connection.cursor()
 cursor.execute("""
 CREATE TABLE IF NOT EXISTS admin(
     admin_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
-    password TEXT NOT NULL
+    username TEXT UNIQUE,
+    password TEXT 
 )
 """)
 
