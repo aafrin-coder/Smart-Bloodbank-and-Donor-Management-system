@@ -1,7 +1,6 @@
 # 🩸 Smart Blood Bank Management System ❤️
 
 <p align="center">
----
 
 ## 🌟 About the Project
 
