@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>User Profile</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="form-container">
+
+<h1>My Profile</h1>
+
+<form action="/update_profile" method="POST">
+
+<input type="text"
+name="full_name"
+value="{{ user['full_name'] }}"
+required>
+
+<input type="text"
+name="username"
+value="{{ user['username'] }}"
+readonly>
+
+<input type="email"
+name="email"
+value="{{ user['email'] }}"
+required>
+
+<input type="text"
+name="phone"
+value="{{ user['phone'] }}"
+required>
+
+<select name="blood_group">
+
+<option {% if user['blood_group']=="A+" %}selected{% endif %}>A+</option>
+<option {% if user['blood_group']=="A-" %}selected{% endif %}>A-</option>
+<option {% if user['blood_group']=="B+" %}selected{% endif %}>B+</option>
+<option {% if user['blood_group']=="B-" %}selected{% endif %}>B-</option>
+<option {% if user['blood_group']=="AB+" %}selected{% endif %}>AB+</option>
+<option {% if user['blood_group']=="AB-" %}selected{% endif %}>AB-</option>
+<option {% if user['blood_group']=="O+" %}selected{% endif %}>O+</option>
+<option {% if user['blood_group']=="O-" %}selected{% endif %}>O-</option>
+
+</select>
+
+<button type="submit">
+
+Update Profile
+
+</button>
+
+</form>
+
+<br>
+
+<a href="/user_dashboard">
+
+<button>
+
+Back to Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+</body>
+
+</html>

@@ -6,10 +6,16 @@ from flask import send_file
 from openpyxl import Workbook
 from reportlab.platypus import SimpleDocTemplate, Table
 
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 
-app.secret_key = "bloodbank_secret_key"
+app.secret_key = "smart_blood_bank_secret_key"
+
+EMAIL_ADDRESS = "smartbloodbank2026@gmail.com"
+EMAIL_PASSWORD = "zoxd waye bpmo ptty"
 
 
 # Database Connection
@@ -18,18 +24,79 @@ def get_db_connection():
     conn.row_factory = sqlite3.Row
     return conn
 
-# Login Page
+def send_welcome_email(receiver_email, full_name):
+
+    subject = "Welcome to Smart Blood Bank"
+
+    body = f"""
+Dear {full_name},
+
+Thank you for registering with Smart Blood Bank Management System.
+
+Your account has been created successfully.
+
+You can now log in and:
+• Register as a donor
+• Request blood
+• View your profile
+
+Thank you for helping save lives.
+
+Regards,
+Smart Blood Bank Team
+"""
+
+    msg = MIMEMultipart()
+
+    msg["From"] = EMAIL_ADDRESS
+    msg["To"] = receiver_email
+    msg["Subject"] = subject
+
+    msg.attach(MIMEText(body, "plain"))
+
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(EMAIL_ADDRESS, EMAIL_PASSWORD)
+        server.send_message(msg)
+        server.quit()
+    except Exception as e:
+        print("Email Error:", e)
+
+#home page
+
 @app.route('/')
+def home():
+
+    conn = get_db_connection()
+
+    total_donors = conn.execute(
+        "SELECT COUNT(*) FROM donor"
+    ).fetchone()[0]
+
+    total_stock = conn.execute(
+        "SELECT SUM(units) FROM blood_stock"
+    ).fetchone()[0] or 0
+
+    total_requests = conn.execute(
+        "SELECT COUNT(*) FROM blood_request"
+    ).fetchone()[0]
+
+    conn.close()
+
+    return render_template(
+        "home.html",
+        total_donors=total_donors,
+        total_stock=total_stock,
+        total_requests=total_requests
+    )
+
+#login page
+
+@app.route('/login')
 def login():
     return render_template("login.html")
 
-# Register page
-
-@app.route('/register')
-def register():
-    return render_template("register.html")
-
-# Login Authentication
 @app.route('/login', methods=['POST'])
 def check_login():
 
@@ -47,56 +114,217 @@ def check_login():
     admin = cursor.fetchone()
     conn.close()
 
-    if admin and check_password_hash(admin["password"],password):
-        session["logged_in"] = True
-        return redirect('/dashboard')
-    else:
-        return render_template(
-            "login.html",
-            error="Invalid Username or Password"
-        )
+    if admin and check_password_hash(admin["password"], password):
+        session.clear()
+        session["admin_id"] = admin["admin_id"]
+        session["admin_name"] = admin["username"]
 
-# Register User
+        return redirect("/dashboard")
+
+    return render_template(
+        "login.html",
+        error="Invalid Admin Username or Password"
+    )
+
+# Register page
+
+@app.route('/register')
+def register():
+    return render_template("register.html")
 
 @app.route('/register', methods=['POST'])
 def save_register():
 
+    full_name = request.form['full_name']
     username = request.form['username']
+    email = request.form['email']
+    phone = request.form['phone']
+    blood_group = request.form['blood_group']
     password = request.form['password']
+    confirm_password = request.form['confirm_password']
+
+    if password != confirm_password:
+
+        return render_template(
+            "register.html",
+            error="Passwords do not match"
+        )
 
     conn = get_db_connection()
 
     existing = conn.execute(
-        "SELECT * FROM admin WHERE username=?",
-        (username,)
+        "SELECT * FROM users WHERE username=? OR email=?",
+        (username, email)
     ).fetchone()
 
     if existing:
+
         conn.close()
+
         return render_template(
             "register.html",
-            error="Username already exists"
+            error="Username or Email already exists"
         )
 
     hashed_password = generate_password_hash(password)
 
-    conn.execute(
-        "INSERT INTO admin(username,password) VALUES(?,?)",
-        (username, hashed_password)
-    )
+    conn.execute("""
+
+    INSERT INTO users
+    (full_name,username,email,phone,blood_group,password)
+
+    VALUES(?,?,?,?,?,?)
+
+    """,
+
+    (
+
+    full_name,
+    username,
+    email,
+    phone,
+    blood_group,
+    hashed_password
+
+    ))
 
     conn.commit()
     conn.close()
 
-    return redirect("/")
+    send_welcome_email(email,full_name)
 
+    return redirect("/user_login")
+
+# User login
+@app.route('/user_login')
+def user_login():
+
+    return render_template("user_login.html")
+
+@app.route('/user_login', methods=['POST'])
+def check_user_login():
+
+    email = request.form['email']
+    password = request.form['password']
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute(
+        "SELECT * FROM users WHERE email=?",
+        (email,)
+    )
+
+    user = cursor.fetchone()
+    conn.close()
+
+    if user and check_password_hash(user["password"], password):
+        session.clear()
+        session["user_id"] = user["user_id"]
+        session["user_name"] = user["full_name"]
+
+        return redirect("/user_dashboard")
+
+    return render_template(
+        "user_login.html",
+        error="Invalid Email or Password"
+    )
+
+
+# User dashboard
+
+@app.route('/user_dashboard')
+def user_dashboard():
+
+    if "user_id" not in session:
+        return redirect("/user_login")
+
+    conn = get_db_connection()
+
+    user = conn.execute(
+        "SELECT * FROM users WHERE user_id=?",
+        (session["user_id"],)
+    ).fetchone()
+
+    conn.close()
+
+    return render_template(
+        "user_dashboard.html",
+        user=user
+    )
+
+# Profile 
+
+@app.route('/profile')
+def profile():
+
+    if "user_id" not in session:
+        return redirect("/user_login")
+
+    conn = get_db_connection()
+
+    user = conn.execute(
+        "SELECT * FROM users WHERE user_id=?",
+        (session["user_id"],)
+    ).fetchone()
+
+    conn.close()
+
+    return render_template(
+        "user_profile.html",
+        user=user
+    )
+
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+
+    if "user_id" not in session:
+        return redirect("/user_login")
+
+    full_name = request.form['full_name']
+    email = request.form['email']
+    phone = request.form['phone']
+    blood_group = request.form['blood_group']
+
+    conn = get_db_connection()
+
+    conn.execute("""
+
+    UPDATE users
+
+    SET
+
+    full_name=?,
+    email=?,
+    phone=?,
+    blood_group=?
+
+    WHERE user_id=?
+
+    """,
+
+    (
+
+    full_name,
+    email,
+    phone,
+    blood_group,
+    session["user_id"]
+
+    ))
+
+    conn.commit()
+
+    conn.close()
+
+    return redirect("/profile")
 
 # Dashboard
 
 @app.route('/dashboard')
 def dashboard():
 
-    if "logged_in" not in session:
+    if "admin_id" not in session:
         return redirect("/")
 
     conn = get_db_connection()
@@ -647,6 +875,59 @@ def export_pdf():
 
     return send_file(file_name, as_attachment=True)
 
+
+# blood_compatibility 
+
+@app.route('/blood_compatibility')
+def compatibility():
+
+    return render_template(
+        "blood_compatibility.html"
+    )
+
+
+@app.route('/blood_compatibility', methods=['POST'])
+def check_compatibility():
+
+    blood = request.form['blood_group']
+
+    compatibility = {
+
+        "A+": "A+, A-, O+, O-",
+
+        "A-": "A-, O-",
+
+        "B+": "B+, B-, O+, O-",
+
+        "B-": "B-, O-",
+
+        "AB+": "All Blood Groups",
+
+        "AB-": "AB-, A-, B-, O-",
+
+        "O+": "O+, O-",
+
+        "O-": "O-"
+
+    }
+
+    return render_template(
+
+        "blood_compatibility.html",
+
+        compatible=compatibility[blood]
+
+    )
+
+# Admin logout
+
+@app.route('/admin_logout')
+def admin_logout():
+
+    session.clear()
+
+    return redirect("/")
+
 # ---------------- Logout ----------------
 
 @app.route('/logout')
@@ -655,6 +936,7 @@ def logout():
     session.clear()
 
     return redirect("/")
+
 
 
 #Run Application

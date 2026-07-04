@@ -70,6 +70,25 @@ SELECT 1 FROM admin WHERE username='admin'
 )
 """)
 
+# User table
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS users(
+
+     user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+     full_name TEXT NOT NULL,
+     username TEXT UNIQUE ,
+     email TEXT UNIQUE ,
+     phone TEXT,
+     blood_group TEXT,
+     password TEXT ,
+
+     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+)
+""")
+
+
 connection.commit()
 connection.close()
 

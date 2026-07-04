@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<title>User Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="form-container">
+
+<h1>Welcome {{ user['full_name'] }} 🎉</h1>
+
+<p><strong>Username:</strong> {{ user['username'] }}</p>
+
+<p><strong>Email:</strong> {{ user['email'] }}</p>
+
+<p><strong>Blood Group:</strong> {{ user['blood_group'] }}</p>
+
+<p><strong>Phone:</strong> {{ user['phone'] }}</p>
+
+<br>
+
+<a href="/donor">
+
+<button>
+
+Register as Donor
+
+</button>
+
+</a>
+
+<br><br>
+
+<a href="/blood_request">
+
+<button>
+
+Request Blood
+
+</button>
+
+</a>
+
+<br><br>
+
+<a href="/profile">
+
+<button>
+
+👤 My Profile
+
+</button>
+
+</a>
+
+<br><br>
+
+<a href="#" 
+onclick="confirmUserLogout()">
+<button> Logout </button>
+</a>
+
+</div>
+
+<script>
+function confirmUserLogout() {
+
+    if (confirm("Are you sure you want to logout?")) {
+
+        window.location.href="/logout";
+
+    }
+
+}
+</script>
+
+</body>
+
+</html>

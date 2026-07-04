@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<style>
+html{
+    scroll-behavior:smooth;
+}
+</style>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Blood Bank</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/home.css') }}">
+
+</head>
+
+<body>
+
+<!-- Navigation -->
+
+<nav class="navbar">
+
+<div class="logo">
+
+🩸 Smart Blood Bank
+
+</div>
+
+<ul class="nav-links">
+
+<li><a href="/">Home</a></li>
+
+<li><a href="/register">Become a Donor</a></li>
+
+<li><a href="/blood_request"> Blood Request </a></li>
+
+<li><a href="/blood_compatibility">
+    Blood Compatibility Checker
+</a></li>
+
+<li><a href="/user_login"
+    class="user-btn">User Login</a></li>
+
+<li><a href="/login"
+    class="admin-btn">Admin Login</a></li>
+
+</ul>
+
+</nav>
+
+<div class="alert">
+
+🚨 Emergency? Request Blood Immediately — We are available 24×7.
+
+</div>
+
+<!-- Hero Section -->
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1>Donate Blood, Save Lives ❤️</h1>
+
+<p>
+
+One donation can save up to three lives.
+Join our community of lifesavers today.
+
+</p>
+
+<a href="/donor" class="btn">
+
+Become a Donor
+
+</a>
+
+<a href="/blood_request" class="btn2">
+
+Request Blood
+
+</a>
+
+</div>
+
+</section>
+
+<!-- Statistics Section -->
+
+<section class="stats">
+
+    <div class="stat-box">
+
+        <h2>{{ total_donors }}</h2>
+
+        <p>Registered Donors</p>
+
+    </div>
+
+    <div class="stat-box">
+
+        <h2>{{ total_stock }}</h2>
+
+        <p>Blood Units</p>
+
+    </div>
+
+    <div class="stat-box">
+
+        <h2>{{ total_requests }}</h2>
+
+        <p>Blood Requests</p>
+
+    </div>
+
+    <div class="stat-box">
+
+        <h2>24/7</h2>
+
+        <p>Emergency Support</p>
+
+    </div>
+
+</section>
+
+<!-- About Section -->
+
+<section class="about">
+
+<h2>About Smart Blood Bank</h2>
+
+<p>
+
+Smart Blood Bank Management System is designed to connect blood donors,
+recipients, hospitals and blood banks through a single online platform.
+
+</p>
+
+</section>
+
+<!-- Mission & Vision -->
+
+<section class="mission">
+
+<div class="mission-box">
+
+<h2>🎯 Our Mission</h2>
+
+<p>
+
+To make blood available quickly during emergencies and encourage voluntary blood donation.
+
+</p>
+
+</div>
+
+<div class="mission-box">
+
+<h2>❤️ Our Vision</h2>
+
+<p>
+
+To build a healthier community where no life is lost because blood is unavailable.
+
+</p>
+
+</div>
+
+</section>
+
+<!-- Blood Groups -->
+
+<section class="blood-groups">
+
+<h2>Available Blood Groups</h2>
+
+<div class="blood-container">
+
+<div class="blood-card">A+</div>
+<div class="blood-card">A−</div>
+<div class="blood-card">B+</div>
+<div class="blood-card">B−</div>
+<div class="blood-card">AB+</div>
+<div class="blood-card">AB−</div>
+<div class="blood-card">O+</div>
+<div class="blood-card">O−</div>
+
+</div>
+
+</section>
+
+<section class="cta-section">
+
+    <h2>Become a Lifesaver Today</h2>
+
+    <p>
+        Your single blood donation can save multiple lives.
+        Join our growing donor community.
+    </p>
+
+    <a href="/register" class="cta-button">
+
+        Register Now
+
+    </a>
+
+</section>
+
+
+<!-- Services -->
+
+<section class="services">
+
+<h2>Our Services</h2>
+
+<div class="service-container">
+
+<div class="service-card">
+<h3>🩸 Blood Donation</h3>
+<p>Register as a donor and help save lives.</p>
+</div>
+
+<div class="service-card">
+<h3>🚑 Emergency Blood Request</h3>
+<p>Request blood during emergencies.</p>
+</div>
+
+<div class="service-card">
+<h3>🏥 Hospital Support</h3>
+<p>Connect hospitals with available donors.</p>
+</div>
+
+</div>
+
+</section>
+
+<!-- Why Donate -->
+
+<section class="why-donate">
+
+<h2>Why Donate Blood?</h2>
+
+<div class="why-container">
+
+<div class="why-card">
+❤️ Save up to 3 Lives
+</div>
+
+<div class="why-card">
+🩸 Blood cannot be manufactured
+</div>
+
+<div class="why-card">
+😊 Free Health Check-up
+</div>
+
+<div class="why-card">
+🌍 Help Your Community
+</div>
+
+</div>
+
+</section>
+
+<!-- Contact Section -->
+
+<section class="contact">
+
+<h2>Contact Us</h2>
+
+<div class="contact-container">
+
+<div class="contact-info">
+
+<h3>📞 Phone</h3>
+<p>+91 9876543210</p>
+
+<h3>📧 Email</h3>
+<p>smartbloodbank@2026gmail.com</p>
+
+</div>
+
+<div class="contact-form">
+
+<form>
+
+<input type="text" placeholder="Your Name" required>
+
+<input type="email" placeholder="Your Email" required>
+
+<textarea rows="5" placeholder="Your Message"></textarea>
+
+<button type="submit">Send Message</button>
+
+</form>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="partners">
+
+<h2>Our Partner Hospitals</h2>
+
+<div class="partner-container">
+
+<div class="partner-card">🏥 City Hospital</div>
+
+<div class="partner-card">🏥 Life Care Hospital</div>
+
+<div class="partner-card">🏥 Apollo Hospital</div>
+
+<div class="partner-card">🏥 Red Cross Blood Centre</div>
+
+</div>
+
+</section>
+
+<!-- Footer -->
+
+<footer>
+
+<h3>🩸 Smart Blood Bank Management System</h3>
+
+<p>Donate Blood • Save Lives • Spread Hope</p>
+
+<div class="social">
+
+<a href="#">Facebook</a>
+
+<a href="#">Instagram</a>
+
+<a href="#">LinkedIn</a>
+
+<a href="#">GitHub</a>
+
+</div>
+
+<p>© 2026 Smart Blood Bank Management System. All Rights Reserved.</p>
+
+</footer>
+
+<button onclick="topFunction()" id="topBtn">⬆</button>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>

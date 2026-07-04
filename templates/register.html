@@ -3,10 +3,10 @@
 
 <head>
 
-    <title>Register</title>
+<title>User Registration</title>
 
-    <link rel="stylesheet"
-          href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
@@ -14,47 +14,80 @@
 
 <div class="form-container">
 
-<h1>Create Account</h1>
+<h1>Create Your Account</h1>
 
 {% if error %}
-
-<p style="color:red">
-
-{{ error }}
-
-</p>
-
+<p class="error">{{ error }}</p>
 {% endif %}
 
 <form action="/register" method="POST">
 
 <input
 type="text"
-name="username"
-placeholder="Enter Username"
+name="full_name"
+placeholder="Full Name"
 required>
+
+<input
+type="text"
+name="username"
+placeholder="Username"
+required>
+
+<input
+type="email"
+name="email"
+placeholder="Email Address"
+required>
+
+<input
+type="text"
+name="phone"
+placeholder="Phone Number"
+required>
+
+<select name="blood_group">
+
+<option value="">Blood Group</option>
+
+<option>A+</option>
+<option>A-</option>
+<option>B+</option>
+<option>B-</option>
+<option>AB+</option>
+<option>AB-</option>
+<option>O+</option>
+<option>O-</option>
+
+</select>
 
 <input
 type="password"
 name="password"
-placeholder="Enter Password"
+placeholder="Password"
+required>
+
+<input
+type="password"
+name="confirm_password"
+placeholder="Confirm Password"
 required>
 
 <button type="submit">
+
 Register
+
 </button>
 
 </form>
 
 <br>
 
-<p>
+<a href="/user_login">
 
-Already have an account?
+    Already have an account? Login
 
-<a href="/">Login Here</a>
-
-</p>
+</a>
 
 </div>
 

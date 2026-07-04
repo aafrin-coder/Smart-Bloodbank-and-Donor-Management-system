@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blood Compatibility Checker</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+
+<div class="compatibility-container">
+
+    <h1>Blood Compatibility Checker</h1>
+
+    <form action="/blood_compatibility" method="POST">
+
+        <select name="blood_group">
+            <option>A+</option>
+            <option>A-</option>
+            <option>B+</option>
+            <option>B-</option>
+            <option>AB+</option>
+            <option>AB-</option>
+            <option>O+</option>
+            <option>O-</option>
+        </select>
+
+        <br></br>
+        
+        <button type="submit">
+            Check Compatibility
+        </button>
+
+    </form>
+
+    {% if compatible %}
+
+    <div class="result-box">
+
+        <h2>Compatible Donors</h2>
+
+        <p>{{ compatible }}</p>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+</body>
+</html>

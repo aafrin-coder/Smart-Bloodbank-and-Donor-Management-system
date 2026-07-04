@@ -1,1 +1,0 @@
-console.log("Blood Bank Management System Loaded Successfully");
