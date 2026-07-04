@@ -18,6 +18,7 @@ background:#f8f8f8;
     display:flex;
     justify-content:space-between;
     align-items:center;
+    flex-warp:warp;
     padding:15px 50px;
     z-index:1000;
     box-shadow:0 3px 10px rgba(0,0,0,0.2);
