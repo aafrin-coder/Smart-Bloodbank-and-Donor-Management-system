@@ -1,13 +1,6 @@
 # 🩸 Smart Blood Bank Management System ❤️
 
 <p align="center">
-
-🚑 **Saving Lives Through Technology** ❤️
-
-<img src="https://media.giphy.com/media/l0MYEqEzwMWFCg8rm/giphy.gif" width="350">
-
-</p>
-
 ---
 
 ## 🌟 About the Project
