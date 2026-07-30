@@ -1,0 +1,88 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Recipients</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="table-container">
+
+<h1>🏥 Recipient List</h1>
+
+
+<form action="/search_recipient" method="GET">
+
+<input
+type="text"
+name="keyword"
+placeholder="Search by Name,Blood Group or Phone">
+
+<button type="submit">
+
+
+🔍 Search
+
+</button>
+
+</form>
+
+<br>
+
+
+<table>
+
+<tr>
+
+<th>ID</th>
+<th>Name</th>
+<th>Age</th>
+<th>Gender</th>
+<th>Blood Group</th>
+<th>Phone</th>
+<th>Hospital</th>
+
+</tr>
+
+{% for r in recipients %}
+
+<tr>
+
+<td>{{ r['recipient_id'] }}</td>
+<td>{{ r['recipient_name'] }}</td>
+<td>{{ r['age'] }}</td>
+<td>{{ r['gender'] }}</td>
+<td>{{ r['blood_group'] }}</td>
+<td>{{ r['phone'] }}</td>
+<td>{{ r['hospital'] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/dashboard">
+
+<button>
+
+Back to Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+</body>
+
+</html>

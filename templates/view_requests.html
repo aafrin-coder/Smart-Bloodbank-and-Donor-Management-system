@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Blood Requests</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="table-container">
+
+<h1>🩸 Blood Requests</h1>
+
+<table>
+
+<tr>
+
+<th>ID</th>
+<th>Patient</th>
+<th>Blood Group</th>
+<th>Units</th>
+<th>Hospital</th>
+<th>Status</th>
+
+</tr>
+
+{% for r in requests %}
+
+<tr>
+
+<td>{{ r['request_id'] }}</td>
+<td>{{ r['patient_name'] }}</td>
+<td>{{ r['blood_group'] }}</td>
+<td>{{ r['units'] }}</td>
+<td>{{ r['hospital'] }}</td>
+<td>{{ r['status'] }}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+<br>
+
+<a href="/dashboard">
+
+<button>
+
+Back to Dashboard
+
+</button>
+
+</a>
+
+</div>
+
+</body>
+
+</html>

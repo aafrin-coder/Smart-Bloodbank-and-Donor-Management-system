@@ -1,0 +1,187 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>🩸 Blood Bank</h2>
+
+<a href="/dashboard">🏠 Dashboard</a>
+
+<a href="/donor">👨 Donor Management</a>
+
+<a href="/blood_stock">🩸 Blood Stock</a>
+
+<a href="/recipient">🏥 Recipient</a>
+
+<a href="/blood_request">📋 Blood Requests</a>
+
+<a href="/reports">📊 Reports</a>
+
+<a href="/logout"
+onclick="return confirm('Are you sure you want to logout?')">
+
+🚪 Logout
+
+</a>
+
+</div>
+
+<div class="main">
+
+<div class="header">
+
+<h1>Blood Bank Management Dashboard</h1>
+
+<p>Welcome Administrator</p>
+
+</div>
+
+
+<div class="cards">
+
+<div class="card">
+
+<h3>Total Donors</h3>
+
+<h1>{{ total_donors }}</h1>
+
+</div>
+
+<div class="card">
+
+<h3>Total Blood Stock</h3>
+
+<h1>{{ total_stock }}</h1>
+
+</div>
+
+<div class="card">
+
+<h3>Total Recipients</h3>
+
+<h1>{{ total_recipients }}</h1>
+
+</div>
+
+<div class="card">
+
+<h3>Blood Requests</h3>
+
+<h1>{{ total_requests }}</h1>
+
+</div>
+
+</div>
+
+
+
+<h2>Available Blood Groups</h2>
+
+
+<div class="blood-container">
+
+<div class="blood">A+</div>
+<div class="blood">A-</div>
+<div class="blood">B+</div>
+<div class="blood">B-</div>
+<div class="blood">AB+</div>
+<div class="blood">AB-</div>
+<div class="blood">O+</div>
+<div class="blood">O-</div>
+
+</div>
+
+<h2>Blood Stock Overview</h2>
+
+<table class="chart-table">
+
+<tr>
+
+<th>Blood Group</th>
+
+<th>Units</th>
+
+<th>Status</th>
+
+</tr>
+
+{% for row in blood_stock %}
+
+<tr>
+
+<td>{{ row['blood_group'] }}</td>
+
+<td>{{ row['units'] }}</td>
+
+<td>
+
+{% if row['status'] == 'Low Stock' %}
+
+<span class="low-stock">
+🔴 Low Stock
+</span>
+
+{% else %}
+
+<span class="available">
+
+🟢 Available
+
+</span>
+
+{% endif %}
+
+</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+
+
+<h2>Quick Actions</h2>
+
+
+<div class="buttons">
+
+<a href="/donor">
+<button>👨 Donors</button>
+</a>
+
+<a href="/recipient">
+<button>🏥 Recipients</button>
+</a>
+
+<a href="/blood_stock">
+<button>🩸 Blood Stock</button>
+</a>
+
+<a href="/blood_request">
+<button>📋 Blood Requests</button>
+</a>
+
+</div>
+
+</div>
+
+</body>
+
+</html>

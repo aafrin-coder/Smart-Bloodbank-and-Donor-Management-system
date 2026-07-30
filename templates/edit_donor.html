@@ -1,0 +1,95 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Donor</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div class="form-container">
+
+<h1>✏️ Edit Donor</h1>
+
+<form action="/update_donor/{{ donor['donor_id'] }}" method="POST">
+
+<input
+type="text"
+name="donor_name"
+value="{{ donor['donor_name'] }}"
+required>
+
+<input
+type="number"
+name="age"
+value="{{ donor['age'] }}"
+required>
+
+<select name="gender" required>
+
+<option value="Male"
+{% if donor['gender']=="Male" %}selected{% endif %}>Male</option>
+
+<option value="Female"
+{% if donor['gender']=="Female" %}selected{% endif %}>Female</option>
+
+<option value="Other"
+{% if donor['gender']=="Other" %}selected{% endif %}>Other</option>
+
+</select>
+
+<select name="blood_group" required>
+
+{% for bg in ['A+','A-','B+','B-','AB+','AB-','O+','O-'] %}
+<option value="{{ bg }}"
+{% if donor['blood_group']==bg %}selected{% endif %}>
+{{ bg }}
+</option>
+{% endfor %}
+
+</select>
+
+<input
+type="text"
+name="phone"
+value="{{ donor['phone'] }}"
+required>
+
+<input
+type="email"
+name="email"
+value="{{ donor['email'] }}">
+
+<textarea
+name="address">{{ donor['address'] }}</textarea>
+
+<input
+type="date"
+name="last_donation"
+value="{{ donor['last_donation'] }}">
+
+<button type="submit">
+Update Donor
+</button>
+
+<br><br>
+
+<a href="/view_donors">
+<button type="button">
+Back to Donor List
+</button>
+</a>
+
+</form>
+
+</div>
+
+</body>
+
+</html>

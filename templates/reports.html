@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Blood Bank Reports</title>
+
+    <link rel="stylesheet"
+    href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<div class="report-container">
+
+<h1>Blood Bank Reports</h1>
+
+<table class="report-table">
+
+<tr>
+    <th>Category</th>
+    <th>Total Records</th>
+</tr>
+
+<tr>
+    <td>Total Donors</td>
+    <td>{{ total_donors }}</td>
+</tr>
+
+<tr>
+    <td>Total Recipients</td>
+    <td>{{ total_recipients }}</td>
+</tr>
+
+<tr>
+    <td>Total Blood Stock</td>
+    <td>{{ total_stock }}</td>
+</tr>
+
+<tr>
+    <td>Total Blood Requests</td>
+    <td>{{ total_requests }}</td>
+</tr>
+
+</table>
+
+<br>
+
+<a href="/dashboard" class="back-btn">
+    ← Back to Dashboard
+</a>
+
+<br><br>
+
+<div class="export-buttons">
+
+    <a href="/export_excel">
+        <button>📊 Export Excel</button>
+    </a>
+
+    <a href="/export_pdf">
+        <button>📄 Export PDF</button>
+    </a>
+
+</div>
+
+
+</div>
+
+</body>
+</html>
