@@ -1,4 +1,4 @@
-# 🩸 Smart Blood Bank Management System ❤️
+# 🩸 Smart Blood Bank Management System 
 
 <p align="center">
 

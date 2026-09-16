@@ -11,11 +11,8 @@ window.onscroll = function () {
         mybutton.style.display="block";
 
     }
-
     else{
-
         mybutton.style.display="none";
-
     }
 
 }
