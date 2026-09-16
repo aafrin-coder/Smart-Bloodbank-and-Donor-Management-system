@@ -23,7 +23,7 @@ def get_db_connection():
     conn = sqlite3.connect("bloodbank.db")
     conn.row_factory = sqlite3.Row
     return conn
-
+    
 def send_welcome_email(receiver_email, full_name):
 
     subject = "Welcome to Smart Blood Bank"
